@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema(
       of: Number,
       default: {},
     },
+    currentStreak: { type: Number, default: 0 },
+    maxStreak: { type: Number, default: 0 },
+    totalAnswered: { type: Number, default: 0 },
+    correctCount: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

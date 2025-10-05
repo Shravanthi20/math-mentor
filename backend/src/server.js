@@ -7,13 +7,13 @@ const app= express();
 app.use(express.json());
 connect_db();
 
-app.use("api/users",userRoutes);
-app.use("app/questions",questionRoutes);
+app.use("/api/users",userRoutes);
+app.use("/api/questions",questionRoutes);
 
 // add middleware for password hashing
 connect_db().then(()=>{
-    app.listen(3000,()=>{
-    console.log("Backend Started, Server listening on port 3000");
-    console.log("http://localhost:3000");
+    app.listen(3001,()=>{
+    console.log("Backend Started, Server listening on port 3001");
+    console.log("http://localhost:3001");
 });
 });

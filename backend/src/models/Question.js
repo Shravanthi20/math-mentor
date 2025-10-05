@@ -2,7 +2,7 @@ const mongoose= require("mongoose")
 
 const questionSchema= mongoose.Schema({
     question:{
-        type: Number,
+        type: String,
         required:true,
         unique: true,
     },

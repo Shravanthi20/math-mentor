@@ -6,6 +6,7 @@ import GenerateProblem from './pages/GenerateProblem';
 import Profile from './pages/Profile';
 import RequireAuth from './RequireAuth';
 import NavBar from './components/NavBar';
+import AddQuestion from './pages/AddQuestion';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/generate" element={<RequireAuth><GenerateProblem /></RequireAuth>} />
           <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
+          <Route path="/add-question" element={<RequireAuth><AddQuestion /></RequireAuth>} />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </div>

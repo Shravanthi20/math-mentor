@@ -4,6 +4,7 @@ export default function NavBar() {
   const navigate = useNavigate();
   const location = useLocation();
   const isAuthed = !!localStorage.getItem('token');
+  const role = localStorage.getItem('role');
 
   const logout = () => {
     localStorage.removeItem('token');
@@ -21,6 +22,9 @@ export default function NavBar() {
         <>
           <Link to="/generate">Problem</Link>
           <Link to="/profile">Profile</Link>
+          {(role === 'teacher' || role === 'admin') && (
+            <Link to="/add-question">Add Question</Link>
+          )}
           <span className="spacer" />
           <button className="btn btn-danger" onClick={logout}>Logout</button>
         </>

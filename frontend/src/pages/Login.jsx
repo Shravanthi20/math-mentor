@@ -23,6 +23,9 @@ export default function Login() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Login failed');
       localStorage.setItem('token', data.token);
+      if (data.user?.role) {
+        localStorage.setItem('role', data.user.role);
+      }
       navigate(from, { replace: true });
     } catch (err) {
       setError(err.message);

@@ -4,6 +4,7 @@ export default function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('user');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -17,7 +18,7 @@ export default function Register() {
       const res = await fetch('/api/users/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password })
+        body: JSON.stringify({ name, email, password, role })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Registration failed');
@@ -44,6 +45,13 @@ export default function Register() {
         <div style={{ marginBottom: 12 }}>
           <label className="label">Password</label>
           <input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        </div>
+        <div style={{ marginBottom: 12 }}>
+          <label className="label">Role</label>
+          <select className="select" value={role} onChange={(e)=>setRole(e.target.value)}>
+            <option value="user">User</option>
+            <option value="teacher">Teacher</option>
+          </select>
         </div>
         {error && <div style={{ color: 'var(--danger)', marginBottom: 12 }}>{error}</div>}
         {success && <div style={{ color: 'var(--success)', marginBottom: 12 }}>{success}</div>}

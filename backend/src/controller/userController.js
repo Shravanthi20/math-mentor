@@ -6,15 +6,18 @@ const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret_key";
 // ------------------- SIGNUP -------------------
 exports.signupUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
     if (!name || !email || !password)
       return res.status(400).json({ message: "All fields are required" });
 
     const userExists = await User.findOne({ email });
     if (userExists) return res.status(400).json({ message: "User already exists" });
 
-    const user = await User.create({ name, email, password });
-    res.status(201).json({ _id: user._id, name: user.name, email: user.email });
+    const allowedRoles = ["user", "teacher", "admin"];
+    const roleToSet = allowedRoles.includes(role) ? role : undefined;
+
+    const user = await User.create({ name, email, password, ...(roleToSet ? { role: roleToSet } : {}) });
+    res.status(201).json({ _id: user._id, name: user.name, email: user.email, role: user.role });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ message: "Server error" });
@@ -30,14 +33,20 @@ exports.loginUser = async (req, res) => {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    const token = jwt.sign({ userId: user._id, email: user.email }, JWT_SECRET, {
+    // Backfill default role if missing
+    if (!user.role) {
+      user.role = "user";
+      await user.save();
+    }
+
+    const token = jwt.sign({ userId: user._id, email: user.email, role: user.role }, JWT_SECRET, {
       expiresIn: "7d",
     });
 
     res.status(200).json({
       message: "Login successful",
       token,
-      user: { _id: user._id, name: user.name, email: user.email },
+      user: { _id: user._id, name: user.name, email: user.email, role: user.role },
     });
   } catch (err) {
     console.error(err.message);

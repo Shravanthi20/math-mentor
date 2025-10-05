@@ -105,3 +105,18 @@ exports.getTopics = async (_req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+// ------------------- CREATE QUESTION (teacher only) -------------------
+exports.createQuestion = async (req, res) => {
+  try {
+    const { question, answer, topic, difficulty } = req.body;
+    if (!question || !answer || !topic || difficulty === undefined) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
+    const created = await Question.create({ question: String(question), answer: String(answer), topic: String(topic), difficulty: Number(difficulty) });
+    res.status(201).json(created);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
